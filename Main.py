@@ -27,6 +27,7 @@ def generate_uml(classes):
         'fontweight': 'bold',  # Set font weight to bold
     }
 
+    # Create class nodes with attributes and methods
     for class_name, details in classes.items():
         attributes = details.get('attributes', [])
         methods = details.get('methods', [])
@@ -42,10 +43,18 @@ def generate_uml(classes):
         # Add the node with the formatted label
         dot.node(class_name, label=label, **node_style)
 
+    # Add inheritance relationships
     for class_name, details in classes.items():
         parent = details.get('inherits')
         if parent:
             dot.edge(parent, class_name, arrowhead='onormal', fontsize='14')
+
+    # Add associations only between User subclasses and related classes
+    for class_name, details in classes.items():
+        if class_name != "User":  # Only add edges for subclasses of User
+            related_classes = details.get('related_classes', [])
+            for related_class in related_classes:
+                dot.edge(class_name, related_class, arrowhead='none', fontsize='14')
 
     return dot
 
