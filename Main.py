@@ -16,13 +16,15 @@ def generate_uml(classes):
     - A Graphviz Digraph object representing the UML diagram.
     """
     dot = Digraph('UML Class Diagram', format='png')
-    dot.attr(rankdir='TB', fontsize='12')
+    dot.attr(rankdir='TB', fontsize='14')
 
+    # Define styles for nodes with bold font and font size 14
     node_style = {
         'shape': 'record',
         'fontname': 'Arial',
-        'fontsize': '12',
+        'fontsize': '14',  # Set font size to 14
         'fontcolor': 'black',
+        'fontweight': 'bold',  # Set font weight to bold
     }
 
     for class_name, details in classes.items():
@@ -30,16 +32,20 @@ def generate_uml(classes):
         methods = details.get('methods', [])
 
         # Use raw strings to avoid the escape sequence warning
+        # Add a blank line for vertical spacing between attributes and methods
         attr_text = r'\l'.join(attributes) + r'\l' if attributes else ''
         method_text = r'\l'.join(methods) + r'\l' if methods else ''
 
+        # Combine attributes and methods with a space for vertical gap
         label = f"{{{class_name}|{attr_text}|{method_text}}}"
+
+        # Add the node with the formatted label
         dot.node(class_name, label=label, **node_style)
 
     for class_name, details in classes.items():
         parent = details.get('inherits')
         if parent:
-            dot.edge(parent, class_name, arrowhead='onormal', fontsize='12')
+            dot.edge(parent, class_name, arrowhead='onormal', fontsize='14')
 
     return dot
 
