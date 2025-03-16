@@ -16,13 +16,15 @@ def generate_uml(classes):
     - A Graphviz Digraph object representing the UML diagram.
     """
     dot = Digraph('UML Class Diagram', format='png')
-    dot.attr(rankdir='TB', fontsize='14')
 
-    # Define styles for nodes with bold font and font size 14
+    # Adjust graph attributes for A4 size (8.27 x 11.69 inches), high resolution, and increased font size
+    dot.attr(rankdir='TB', fontsize='18', size='8.27,11.69', nodesep='1', dpi='300')  # Increased font size to 18
+
+    # Define styles for nodes with bold font and larger font size
     node_style = {
         'shape': 'record',
         'fontname': 'Arial',
-        'fontsize': '14',  # Set font size to 14
+        'fontsize': '18',  # Increased font size to 18
         'fontcolor': 'black',
         'fontweight': 'bold',  # Set font weight to bold
     }
@@ -47,14 +49,14 @@ def generate_uml(classes):
     for class_name, details in classes.items():
         parent = details.get('inherits')
         if parent:
-            dot.edge(parent, class_name, arrowhead='onormal', fontsize='14')
+            dot.edge(parent, class_name, arrowhead='onormal', fontsize='18')  # Increased font size in edges
 
     # Add associations only between User subclasses and related classes
     for class_name, details in classes.items():
         if class_name != "User":  # Only add edges for subclasses of User
             related_classes = details.get('related_classes', [])
             for related_class in related_classes:
-                dot.edge(class_name, related_class, arrowhead='none', fontsize='14')
+                dot.edge(class_name, related_class, arrowhead='none', fontsize='18')  # Increased font size in edges
 
     return dot
 
